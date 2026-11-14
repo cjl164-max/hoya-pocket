@@ -157,7 +157,7 @@ label.lbl{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:-10px}
 <h2>Hoya Pocket</h2>
 <p>A clickable prototype of a budgeting app for Georgetown students: one spendable number, Flex kept apart from cash, and reminders that turn into real savings.</p>
 <p>Try it: finish setup, ask “Can I afford this?”, log a purchase with <b>+</b>, then open the Spotify alert and switch to the student plan.</p>
-<p style="color:#5B6675;font-size:13px">Sample data for persona Sam Reyes · Product Space Fall 2026 · Ishaan Aggarwal + Caroline Liu</p>
+<p style="color:#5B6675;font-size:13px">Sample data for persona Sexy Sam · Product Space Fall 2026 · Ishaan Aggarwal + Caroline Liu</p>
 </aside>
 <main class="phone" id="app" aria-label="Hoya Pocket prototype"></main>
 <script>
@@ -338,7 +338,7 @@ function vHome() {
   var ax = alertId && SUBS[alertId];
   var act = S.activity || [];
   return '<div class="scr">' +
-    '<div class="topbar"><div><div class="eyebrow">TUESDAY, OCT 20</div><h1 style="margin-top:2px">Hi, Sam</h1></div><button class="link" data-a="reset">Reset demo</button></div>' +
+    '<div class="topbar"><div><div class="eyebrow">TUESDAY, OCT 20</div><h1 style="margin-top:2px">Hi, Sexy Sam</h1></div><button class="link" data-a="reset">Reset demo</button></div>' +
     '<div class="hero"><div class="k">Money left for October</div><div class="v">' + money(S.left) + '</div><div class="bar"><i style="width:' + pct.toFixed(1) + '%"></i></div><div class="f"><span>of ' + trim0(money(S.plan)) + ' plan</span><span>≈ $' + perDay + '/day · ' + DAYS_LEFT + ' days</span></div></div>' +
     '<div class="duo"><button class="mini" data-a="go" data-v="bills"><span class="k">Held for bills</span><span class="v">' + money(held()) + '</span></button><button class="mini mint" data-a="go" data-v="flex"><span class="k">Flex dollars</span><span class="v">' + money(S.flex) + '</span></button></div>' +
     (ax ? '<button class="alert" data-a="openBill" data-v="' + alertId + '" data-b="home">' + I.bell + '<span class="main"><span class="t">' + ax.short + ' renews ' + ax.renews + ' · ' + money(ax.price) + '</span><span class="s">' + ax.alertSub + '</span></span>' + I.chevR('#7A4C00') + '</button>' : '') +

@@ -4,7 +4,7 @@ Clickable prototype of Hoya Pocket, a budgeting app for Georgetown students.
 Product Space Fall 2026 · Ishaan Aggarwal + Caroline Liu.
 
 Flows: Setup → Home (money left) → Can I afford this? / Log a purchase / Renewal decision → Savings.
-All data is sample data for the persona Sam Reyes; nothing is sent anywhere. State is saved in your browser, and "Reset demo" on Home starts over.
+All data is sample data for the persona Sexy Sam; nothing is sent anywhere. State is saved in your browser, and "Reset demo" on Home starts over.
 
 Open with `?start=home` to skip onboarding.
 
