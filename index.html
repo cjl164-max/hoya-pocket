@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hoya Pocket</title>
+<meta name="description" content="Clickable prototype of Hoya Pocket, a budgeting app for Georgetown students.">
+<meta name="theme-color" content="#041E42">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#041E42;--ink:#0E1B2C;--muted:#5B6675;--muted2:#3E4957;--line:#EDF0F4;--soft:#F3F5F8;--soft2:#EEF1F5;--border:#DCE1E8;
+  --mint:#E6F5EF;--mintInk:#0B7A55;--mintInk2:#0B6B4B;--mintText:#0E3B2C;--check:#0E8F6A;
+  --amber:#FFF4E0;--amberInk:#6E4100;--amberInk2:#7A4C00;--amberIcon:#A86400;
+  --red:#FDECEA;--redInk:#8A1F14;--page:#E9EDF2;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{min-height:100vh;background:var(--page);font-family:Inter,system-ui,-apple-system,sans-serif;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:48px;padding:24px 16px;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer;border:0;background:none;padding:0;color:inherit;text-align:inherit;font-size:inherit}
+button:disabled{cursor:default;opacity:.45}
+input{font-family:inherit}
+button:focus-visible,input:focus-visible{outline:2px solid #2F6FDE;outline-offset:2px}
+.side{max-width:280px;color:var(--muted2);font-size:14px;line-height:1.55}
+.side h2{margin:0 0 6px;font-size:26px;letter-spacing:-.5px;color:var(--navy)}
+.side p{margin:0 0 12px}
+.phone{width:390px;height:844px;flex:none;position:relative;overflow:hidden;background:#fff;border-radius:48px;box-shadow:0 0 0 10px #10151c,0 30px 60px rgba(4,30,66,.25);display:flex;flex-direction:column}
+@media (min-width:761px) and (max-height:920px){.phone{zoom:.85}}
+@media (min-width:761px) and (max-height:780px){.phone{zoom:.75}}
+@media (max-width:760px){
+  body{padding:0;display:block;background:#fff}
+  .side{display:none}
+  .phone{width:100%;height:100vh;height:100dvh;border-radius:0;box-shadow:none}
+}
+.content{flex:1;min-height:0;overflow-y:auto}
+.scr{padding:56px 20px 24px;display:flex;flex-direction:column;gap:16px}
+.scr.full{min-height:100%}
+.grow{flex:1}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.6px;color:var(--muted)}
+h1{margin:0;font-size:28px;font-weight:800;letter-spacing:-.5px}
+h1.sm{font-size:26px}
+.lead{margin:0;font-size:15px;line-height:1.45;color:var(--muted)}
+.prog{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.prog i{height:4px;border-radius:4px;background:var(--border)}
+.prog i.on{background:var(--navy)}
+.field{display:flex;align-items:center;gap:6px;background:var(--soft);border-radius:16px;padding:0 18px;height:68px}
+.field span{font-size:32px;font-weight:800;color:var(--muted)}
+.field input{flex:1;min-width:0;border:0;background:transparent;font-size:32px;font-weight:800;color:var(--ink);outline:none}
+.field.mint{background:var(--mint)}.field.mint span{color:var(--mintInk)}.field.mint input{color:#0B5E43}
+label.lbl{font-size:13px;font-weight:600;color:var(--muted);margin-bottom:-10px}
+.tip{display:flex;gap:10px;align-items:flex-start;background:var(--soft);border-radius:14px;padding:14px 16px;font-size:14px;line-height:1.45;color:var(--muted2)}
+.tip svg{flex:none;margin-top:1px}
+.btn{height:56px;border-radius:16px;background:var(--navy);color:#fff;font-size:17px;font-weight:700;text-align:center;width:100%}
+.btn.big{height:60px;font-size:18px}
+.btn2{height:56px;border-radius:16px;background:#fff;border:1.5px solid var(--border);color:var(--navy);font-size:17px;font-weight:700;text-align:center;width:100%}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pair.wide{grid-template-columns:1fr 1.6fr}
+.pair.w2{grid-template-columns:1fr 2fr}
+.row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);width:100%;min-height:44px}
+.row .main{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.row .t{font-size:16px;font-weight:700}
+.row .s{font-size:13px;color:var(--muted)}
+.row .amt{font-size:15px;font-weight:700}
+.tile{flex:none;width:40px;height:40px;border-radius:10px;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800}
+.tile.lg{width:52px;height:52px;border-radius:13px;font-size:23px}
+.addtile{background:var(--soft2);color:var(--muted)}
+.save-card{background:var(--mint);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.save-card .h{font-size:17px;font-weight:800;color:var(--mintInk)}
+.save-card .l{display:flex;gap:8px;align-items:center;font-size:15px;color:var(--mintText)}
+.hero{background:var(--navy);border-radius:22px;padding:20px;color:#fff;display:flex;flex-direction:column;gap:10px}
+.hero .k{font-size:15px;font-weight:600;color:#C9D6EA}
+.hero .v{font-size:48px;font-weight:800;letter-spacing:-1.5px;line-height:1}
+.bar{height:8px;border-radius:999px;background:rgba(255,255,255,.18);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;border-radius:999px;background:#4CC79A;transition:width .3s}
+.hero .f{display:flex;justify-content:space-between;font-size:13px;color:#C9D6EA}
+.duo{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mini{border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:2px;background:var(--soft)}
+.mini .k{font-size:13px;font-weight:600;color:var(--muted)}
+.mini .v{font-size:22px;font-weight:800}
+.mini.mint{background:var(--mint)}.mini.mint .k{color:var(--mintInk2)}.mini.mint .v{color:var(--mintInk)}
+.alert{background:var(--amber);border-radius:16px;padding:14px 16px;display:flex;gap:12px;align-items:center;width:100%}
+.alert .main{flex:1;display:flex;flex-direction:column;gap:2px}
+.alert .t{font-size:15px;font-weight:700;color:var(--amberInk)}
+.alert .s{font-size:14px;color:var(--amberInk2)}
+.link{font-size:13px;font-weight:600;color:var(--muted);padding:12px 4px;text-decoration:underline}
+.topbar{display:flex;justify-content:space-between;align-items:flex-start}
+.card{background:var(--soft);border-radius:14px;padding:14px 16px;font-size:15px;line-height:1.45;color:var(--muted2)}
+.card.mint{background:var(--mint);color:var(--mintText)}
+.card.mint b{color:var(--mintInk2)}
+.card.amber{background:var(--amber);color:var(--amberInk);font-size:14px;display:flex;gap:10px;align-items:flex-start}
+.card.amber svg{flex:none;margin-top:1px}
+.card.red{background:var(--red);color:var(--redInk);font-size:14px}
+.card.ok{background:var(--mint);color:var(--mintInk2);font-weight:600}
+.tags{display:flex;gap:8px;flex-wrap:wrap}
+.tag{font-size:11px;font-weight:800;letter-spacing:.5px;padding:5px 9px;border-radius:6px;white-space:nowrap}
+.tag.g{color:var(--mintInk2);background:var(--mint)}
+.tag.a{color:var(--amberInk2);background:var(--amber)}
+.tag.n{color:var(--muted2);background:var(--soft2)}
+.back{display:flex;align-items:center;gap:2px;font-size:16px;color:var(--muted);min-height:44px;align-self:flex-start}
+.seg{display:flex;background:var(--soft2);border-radius:14px;padding:4px;gap:4px}
+.seg button{flex:1;height:44px;border-radius:11px;font-size:16px;font-weight:600;text-align:center;color:var(--muted2)}
+.seg button.on{background:#fff;color:var(--ink);font-weight:700;box-shadow:0 1px 3px rgba(14,27,44,.12)}
+.seg.dark button.on{background:var(--navy);color:#fff;box-shadow:none}
+.steps{display:flex;flex-direction:column;gap:10px}
+.step{display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.4}
+.step b{flex:none;width:24px;height:24px;border-radius:999px;background:var(--navy);color:#fff;font-size:13px;display:flex;align-items:center;justify-content:center}
+.step span{padding-top:2px}
+.note{font-size:14px;color:var(--muted2);line-height:1.45}
+.fine{font-size:13px;color:var(--muted);line-height:1.45}
+.bigcard{border-radius:22px;padding:22px 20px;display:flex;flex-direction:column;gap:6px;background:var(--mint)}
+.bigcard .k{font-size:15px;font-weight:700;color:var(--mintInk2)}
+.bigcard .v{font-size:44px;font-weight:800;letter-spacing:-1.2px;color:var(--mintInk);line-height:1.05}
+.bigcard.c{align-items:center;gap:4px}
+.bigcard .v small{font-size:20px;font-weight:700;letter-spacing:0}
+.q{background:var(--soft);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.q .t{font-size:15px;font-weight:700;text-align:center}
+.q button{height:48px;border-radius:14px;background:#fff;border:1.5px solid var(--border);font-size:16px;font-weight:700;text-align:center}
+.amtview{font-size:52px;font-weight:800;letter-spacing:-1.5px;text-align:center;line-height:1.1;padding:4px 0}
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.chip{min-height:44px;padding:0 16px;border-radius:999px;font-size:15px;font-weight:600;background:var(--soft);color:var(--ink)}
+.chip.on{background:var(--navy);color:#fff}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.key{height:52px;border-radius:14px;background:var(--soft);font-size:22px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.key:active{background:var(--border)}
+.notein{height:48px;border:0;border-radius:14px;background:var(--soft);padding:0 16px;font-size:15px;color:var(--ink);width:100%}
+.hdr{display:grid;grid-template-columns:1fr auto 1fr;align-items:center}
+.hdr button{font-size:16px;color:var(--muted);min-height:44px;justify-self:start}
+.hdr div{font-size:17px;font-weight:700}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.tabs{flex:none;height:84px;border-top:1px solid var(--line);background:#fff;display:flex;justify-content:space-around;align-items:flex-start;padding-top:6px}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:64px;min-height:52px;font-size:11px;font-weight:500;color:var(--muted)}
+.tab.on{font-weight:700;color:var(--navy)}
+.fab{width:56px;height:56px;border-radius:999px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;margin-top:-18px;box-shadow:0 6px 16px rgba(4,30,66,.28)}
+.dim{position:absolute;inset:0;background:rgba(4,30,66,.45);display:flex;flex-direction:column;justify-content:flex-end;animation:fade .2s}
+.sheet{background:#fff;border-radius:28px 28px 0 0;padding:10px 20px 28px;display:flex;flex-direction:column;gap:14px;animation:up .25s ease-out}
+.sheet .top{display:grid;grid-template-columns:44px 1fr 44px;align-items:center}
+.sheet .grab{width:40px;height:5px;border-radius:999px;background:var(--border);justify-self:center}
+.sheet .x{width:44px;height:44px;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.sheet .ttl{font-size:20px;font-weight:800;text-align:center;margin-top:-10px}
+.res{border-radius:18px;padding:20px 16px;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;background:var(--mint);color:var(--mintText)}
+.res .ic{width:52px;height:52px;border-radius:999px;background:var(--check);display:flex;align-items:center;justify-content:center;color:#fff}
+.res .t{font-size:22px;font-weight:800;color:var(--mintInk);margin-top:4px}
+.res .l2{font-weight:700}
+.res.warn{background:var(--amber);color:var(--amberInk)}
+.res.warn .ic{background:var(--amberIcon)}
+.res.warn .t{color:var(--amberInk)}
+.undl{font-size:14px;color:var(--muted);text-align:center;min-height:32px;text-decoration:underline}
+.toast{position:absolute;left:20px;right:20px;bottom:104px;display:flex;justify-content:center;pointer-events:none;animation:fade .2s}
+.toast div{background:var(--ink);color:#fff;font-size:14px;font-weight:600;padding:12px 18px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.18);text-align:center}
+@keyframes up{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+</style>
+</head>
+<body>
+<aside class="side">
+<h2>Hoya Pocket</h2>
+<p>A clickable prototype of a budgeting app for Georgetown students: one spendable number, Flex kept apart from cash, and reminders that turn into real savings.</p>
+<p>Try it: finish setup, ask “Can I afford this?”, log a purchase with <b>+</b>, then open the Spotify alert and switch to the student plan.</p>
+<p style="color:#5B6675;font-size:13px">Sample data for persona Sam Reyes · Product Space Fall 2026 · Ishaan Aggarwal + Caroline Liu</p>
+</aside>
+<main class="phone" id="app" aria-label="Hoya Pocket prototype"></main>
+<script>
+(function () {
+'use strict';
+var KEY = 'hoyaPocketDemo.web.v1';
+var SPENT_SO_FAR = 297.99;
+var DAYS_LEFT = 11;
+
+var I = {
+  bulb: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></svg>',
+  check: function (c, w, s) { return '<svg width="' + (s || 16) + '" height="' + (s || 16) + '" viewBox="0 0 24 24" fill="none" stroke="' + c + '" stroke-width="' + (w || 3) + '" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>'; },
+  plus: function (s, w) { return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + w + '" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>'; },
+  bell: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#A86400" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M6 16v-5a6 6 0 1 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></svg>',
+  chevR: function (c) { return '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="' + c + '" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none"><path d="M9 5l7 7-7 7"/></svg>'; },
+  chevL: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>',
+  warn: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A86400" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/></svg>',
+  bang: '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 8v5M12 16.5h.01"/></svg>',
+  del: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 5H9l-6 7 6 7h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1z"/><path d="M12 9l6 6M18 9l-6 6"/></svg>',
+  x: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>',
+  home: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>',
+  bills: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>',
+  flex: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M2.5 10h19M6.5 15h4"/></svg>',
+  savings: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9.3c-.5-.9-1.6-1.4-3-1.4-1.7 0-3 .8-3 2s1.3 1.7 3 2 3 .8 3 2-1.3 2-3 2c-1.4 0-2.5-.5-3-1.4M12 6.3v11.4"/></svg>'
+};
+
+var SUBS = {
+  spotify: {
+    name: 'Spotify', short: 'Spotify', letter: 'S', tile: '#1E8E4A',
+    price: 12.99, renews: 'Oct 28', days: 8, thisMonth: true,
+    perkTag: 'STUDENT PLAN', perkBold: 'There’s a cheaper plan.',
+    perkText: 'Spotify Premium Student is $5.99/mo with your Georgetown email.',
+    ruleText: 'Switch before Oct 28 so your next charge is the student price, not $12.99.',
+    choices: ['keep', 'switch', 'stop'], defaultChoice: 'switch',
+    steps: {
+      switch: ['Open Spotify’s student page and sign in', 'Verify with your @georgetown.edu email', 'Confirm the plan change before Oct 28'],
+      stop: ['Cancel Premium in Spotify account settings before Oct 28']
+    },
+    save: { switch: 7.00, stop: 12.99 },
+    doneLabel: { switch: 'Switched to student plan', stop: 'Stopped Premium' },
+    alertSub: 'A student plan is cheaper'
+  },
+  nyt: {
+    name: 'New York Times', short: 'NYT', letter: 'N', tile: '#111111',
+    price: 6.00, renews: 'Nov 2', days: 13, thisMonth: false,
+    perkTag: 'GU FREE', perkBold: 'You already have this.',
+    perkText: 'NYT is free with your Georgetown Library account.',
+    ruleText: 'Cancel your paid plan first, then claim the GU pass, so you never lose access.',
+    choices: ['keep', 'stop'], defaultChoice: 'stop',
+    steps: { stop: ['Cancel in NYT account settings', 'Claim free pass on GU Library site'] },
+    save: { stop: 6.00 },
+    doneLabel: { stop: 'Stopped · claimed GU pass' },
+    alertSub: 'It’s free with Georgetown'
+  }
+};
+var ORDER = ['spotify', 'nyt'];
+var CATS = ['Food', 'Fun', 'Supplies', 'Other'];
+var CHOICE_LABEL = { keep: 'Keep', switch: 'Switch', stop: 'Stop' };
+var TAB_SCREENS = ['home', 'bills', 'flex', 'savings'];
+
+function fresh() {
+  var start = /[?&]start=home/.test(location.search) ? 'home' : 'setup1';
+  return {
+    screen: start, prev: 'home', sheet: null,
+    planStr: '400', flexStr: '86.40', plan: 400, left: 102.01, flex: 86.40,
+    activity: [],
+    subs: { spotify: { status: 'active', action: null, retry: false }, nyt: { status: 'active', action: null, retry: false } },
+    affAmt: '', affCat: 'Food', affStage: 'enter',
+    logAmt: '', logCat: 'Food', logVia: 'Cash', logNote: '',
+    billId: 'spotify', billChoice: 'switch', billBackTo: 'home'
+  };
+}
+function load() {
+  try { var s = JSON.parse(localStorage.getItem(KEY)); if (s && s.subs) { s.sheet = null; return s; } } catch (e) {}
+  return null;
+}
+function persist() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+
+var S = load() || fresh();
+var toastMsg = '', toastTimer = null;
+var app = document.getElementById('app');
+
+// ---------- helpers ----------
+function r2(n) { return Math.round(n * 100) / 100; }
+function money(n) { var v = r2(n), s = '$' + Math.abs(v).toFixed(2); return v < 0 ? '−' + s : s; }
+function trim0(s) { return s.replace('.00', ''); }
+function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+function parseAmt(s) { var n = parseFloat(s); return isNaN(n) ? 0 : r2(n); }
+function showAmt(s) { return '$' + (s && s.length ? s : '0'); }
+function tile(x, lg) { return '<span class="tile' + (lg ? ' lg' : '') + '" style="background:' + x.tile + '">' + x.letter + '</span>'; }
+function setSub(id, patch) { S.subs[id] = Object.assign({}, S.subs[id], patch); }
+
+function held() {
+  var t = 0;
+  ORDER.forEach(function (id) {
+    var x = SUBS[id], s = S.subs[id];
+    if (!x.thisMonth) return;
+    if (s.status === 'confirmed' && s.action === 'stop') return;
+    if (s.status === 'confirmed' && s.action === 'switch') { t += x.price - x.save.switch; return; }
+    t += x.price;
+  });
+  return r2(t);
+}
+function savedTotal() {
+  var t = 0;
+  ORDER.forEach(function (id) { var s = S.subs[id]; if (s.status === 'confirmed' && s.action) t += SUBS[id].save[s.action]; });
+  return r2(t);
+}
+function nextBill() {
+  for (var i = 0; i < ORDER.length; i++) {
+    var x = SUBS[ORDER[i]], s = S.subs[ORDER[i]];
+    if (x.thisMonth && !(s.status === 'confirmed' && s.action === 'stop')) return x;
+  }
+  return null;
+}
+function addActivity(e) { S.activity = [e].concat(S.activity || []).slice(0, 30); }
+
+function toast(msg) {
+  toastMsg = msg; clearTimeout(toastTimer);
+  toastTimer = setTimeout(function () { toastMsg = ''; render(); }, 2600);
+}
+
+function affordOutcome() {
+  var amt = parseAmt(S.affAmt), h = held(), nb = nextBill();
+  if (S.affCat === 'Food' && S.flex >= amt) return { kind: 'flex', amt: amt, title: 'Yes, use Flex', l1: 'Cash stays at ' + money(S.left), l2: 'Flex: ' + money(S.flex) + ' → ' + money(S.flex - amt), buy: 'Buy with Flex' };
+  if (S.left - h >= amt) return { kind: 'cash', amt: amt, title: 'Yes, you can', l1: 'You’ll have ' + money(S.left - amt) + ' left', l2: nb ? 'Still covers ' + nb.short + ' on ' + nb.renews : 'No bills due this month', buy: 'Buy' };
+  return { kind: 'warn', amt: amt, title: 'This cuts into bills', l1: 'You’d have ' + money(S.left - amt) + ' left', l2: nb ? nb.short + ' needs ' + money(h) + ' on ' + nb.renews : 'That’s over your plan for October', buy: 'Buy anyway' };
+}
+
+// ---------- views ----------
+function prog(n) { var h = '<div class="prog">'; for (var i = 1; i <= 3; i++) h += '<i class="' + (i <= n ? 'on' : '') + '"></i>'; return h + '</div>'; }
+function keypad() {
+  var ks = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', 'del'];
+  return '<div class="keypad">' + ks.map(function (k) {
+    var label = k === 'del' ? I.del : k;
+    var aria = k === 'del' ? 'Delete' : (k === '.' ? 'Decimal point' : k);
+    return '<button class="key" data-a="key" data-v="' + k + '" aria-label="' + aria + '">' + label + '</button>';
+  }).join('') + '</div>';
+}
+function chips(action, current) {
+  return '<div class="chips">' + CATS.map(function (c) {
+    return '<button class="chip' + (c === current ? ' on' : '') + '" aria-pressed="' + (c === current) + '" data-a="' + action + '" data-v="' + c + '">' + c + '</button>';
+  }).join('') + '</div>';
+}
+function actRow(a) {
+  var skip = a.kind === 'skip';
+  var label = skip ? 'Skipped · ' + a.cat : a.cat + (a.note ? ' · ' + a.note : '');
+  return '<div class="row"><div class="main"><span class="t" style="font-size:15px;font-weight:600">' + esc(label) + '</span><span class="s">' + (skip ? 'Kept in your pocket' : 'Paid with ' + a.via) + '</span></div>' +
+    '<span class="amt" style="color:' + (skip ? 'var(--mintInk)' : 'var(--ink)') + '">' + (skip ? money(a.amt) : '−' + money(a.amt)) + '</span></div>';
+}
+
+function vSetup1() {
+  return '<div class="scr full">' + prog(1) +
+    '<div style="display:flex;flex-direction:column;gap:6px"><div class="eyebrow">STEP 1 OF 3</div><h1 class="sm">What’s your monthly plan?</h1><p class="lead">The cash you plan to spend each month. Flex is tracked separately.</p></div>' +
+    '<label class="lbl" for="plan">Monthly plan</label><div class="field"><span>$</span><input id="plan" inputmode="decimal" data-in="planStr" value="' + esc(S.planStr) + '"></div>' +
+    '<div class="tip">' + I.bulb + '<span>No bank login. You type in the numbers and Hoya Pocket does the math.</span></div>' +
+    '<div class="grow"></div><button class="btn" data-a="go" data-v="setup2">Next</button></div>';
+}
+function vSetup2() {
+  return '<div class="scr full">' + prog(2) +
+    '<div style="display:flex;flex-direction:column;gap:6px"><div class="eyebrow">STEP 2 OF 3</div><h1 class="sm">What’s your Flex balance?</h1><p class="lead">Find it in GU eAccounts under Flex Dollars.</p></div>' +
+    '<label class="lbl" for="flexin">Flex balance</label><div class="field mint"><span>$</span><input id="flexin" inputmode="decimal" data-in="flexStr" value="' + esc(S.flexStr) + '"></div>' +
+    '<div class="grow"></div><div class="pair"><button class="btn2" data-a="go" data-v="setup1">Back</button><button class="btn" data-a="go" data-v="setup3">Next</button></div></div>';
+}
+function vSetup3() {
+  var rows = ORDER.map(function (id) { var x = SUBS[id]; return '<div class="row">' + tile(x) + '<div class="main"><span class="t">' + x.short + '</span><span class="s">Renews ' + x.renews + '</span></div><span class="t">' + money(x.price) + '</span></div>'; }).join('');
+  return '<div class="scr full">' + prog(3) +
+    '<div style="display:flex;flex-direction:column;gap:6px"><div class="eyebrow">STEP 3 OF 3</div><h1 class="sm">What do you pay for?</h1></div>' +
+    '<div>' + rows + '<button class="row" data-a="addAnother"><span class="tile addtile">' + I.plus(18, 2.2) + '</span><span class="t" style="color:var(--muted);font-weight:600">Add another</span></button></div>' +
+    '<div class="tip">' + I.bulb + '<span>Not sure of a date? Open <b>Settings › your name › Subscriptions</b> on your iPhone.</span></div>' +
+    '<div class="save-card"><div class="h">2 ways to save found</div><div class="l">' + I.check('#0B7A55') + '<span>NYT is <b>free</b> with Georgetown</span></div><div class="l">' + I.check('#0B7A55') + '<span>Spotify has a <b>student plan</b></span></div></div>' +
+    '<div class="grow"></div><div class="pair w2"><button class="btn2" data-a="go" data-v="setup2">Back</button><button class="btn" data-a="finish">Finish setup</button></div></div>';
+}
+function vHome() {
+  var pct = S.plan > 0 ? Math.max(0, Math.min(100, S.left / S.plan * 100)) : 0;
+  var perDay = Math.max(0, Math.floor(S.left / DAYS_LEFT));
+  var alertId = null; ORDER.forEach(function (id) { if (!alertId && S.subs[id].status === 'active') alertId = id; });
+  var ax = alertId && SUBS[alertId];
+  var act = S.activity || [];
+  return '<div class="scr">' +
+    '<div class="topbar"><div><div class="eyebrow">TUESDAY, OCT 20</div><h1 style="margin-top:2px">Hi, Sam</h1></div><button class="link" data-a="reset">Reset demo</button></div>' +
+    '<div class="hero"><div class="k">Money left for October</div><div class="v">' + money(S.left) + '</div><div class="bar"><i style="width:' + pct.toFixed(1) + '%"></i></div><div class="f"><span>of ' + trim0(money(S.plan)) + ' plan</span><span>≈ $' + perDay + '/day · ' + DAYS_LEFT + ' days</span></div></div>' +
+    '<div class="duo"><button class="mini" data-a="go" data-v="bills"><span class="k">Held for bills</span><span class="v">' + money(held()) + '</span></button><button class="mini mint" data-a="go" data-v="flex"><span class="k">Flex dollars</span><span class="v">' + money(S.flex) + '</span></button></div>' +
+    (ax ? '<button class="alert" data-a="openBill" data-v="' + alertId + '" data-b="home">' + I.bell + '<span class="main"><span class="t">' + ax.short + ' renews ' + ax.renews + ' · ' + money(ax.price) + '</span><span class="s">' + ax.alertSub + '</span></span>' + I.chevR('#7A4C00') + '</button>' : '') +
+    '<button class="btn big" data-a="openAfford">Can I afford this?</button>' +
+    (act.length ? '<div style="margin-top:6px"><div class="eyebrow" style="padding-bottom:4px">RECENT</div>' + act.slice(0, 3).map(actRow).join('') + '</div>' : '') +
+    '</div>';
+}
+function statusTag(id) {
+  var s = S.subs[id];
+  if (s.status === 'confirmed') return '<span class="tag g">SAVED</span>';
+  if (s.status === 'pending') return '<span class="tag n">CHECKING</span>';
+  if (s.status === 'kept') return '<span class="tag n">KEPT</span>';
+  return '<span class="tag g">' + SUBS[id].perkTag + '</span>';
+}
+function vBills() {
+  var rows = ORDER.map(function (id) {
+    var x = SUBS[id], s = S.subs[id];
+    var price = (s.status === 'confirmed' && s.action === 'switch') ? x.price - x.save.switch : x.price;
+    var meta = (s.status === 'confirmed' && s.action === 'stop') ? 'No more charges' : money(price) + '/mo · renews ' + x.renews;
+    return '<button class="row" style="padding:14px 0" data-a="openBill" data-v="' + id + '" data-b="bills">' + tile(x) + '<span class="main"><span class="t">' + x.name + '</span><span class="s">' + meta + '</span></span>' + statusTag(id) + I.chevR('#5B6675') + '</button>';
+  }).join('');
+  return '<div class="scr"><h1>Bills</h1>' +
+    '<div class="card" style="display:flex;justify-content:space-between;align-items:center;padding:16px"><div><div style="font-size:13px;font-weight:600;color:var(--muted)">Held for bills this month</div><div style="font-size:24px;font-weight:800;color:var(--ink)">' + money(held()) + '</div></div><div style="font-size:13px;color:var(--muted);text-align:right;max-width:150px;line-height:1.4">Kept out of your money left until they charge</div></div>' +
+    '<div>' + rows + '</div></div>';
+}
+function vBill() {
+  var id = S.billId, x = SUBS[id], s = S.subs[id], ch = S.billChoice;
+  var decide = s.status === 'active' || s.status === 'kept';
+  var steps = (ch !== 'keep' && x.steps[ch]) ? x.steps[ch] : [];
+  var backLabel = S.billBackTo === 'home' ? 'Home' : (S.billBackTo === 'savings' ? 'Savings' : 'Bills');
+  var h = '<div class="scr full" style="padding-top:48px;gap:14px">' +
+    '<button class="back" data-a="go" data-v="' + S.billBackTo + '">' + I.chevL + '<span>' + backLabel + '</span></button>' +
+    '<div style="display:flex;align-items:center;gap:14px">' + tile(x, true) + '<div><div style="font-size:22px;font-weight:800;letter-spacing:-.3px">' + x.name + '</div><div style="font-size:14px;color:var(--muted)">' + money(x.price) + '/mo · renews ' + x.renews + '</div></div></div>' +
+    '<div class="tags"><span class="tag g">' + x.perkTag + '</span><span class="tag a">RENEWS IN ' + x.days + ' DAYS</span></div>';
+  if (s.retry && decide) h += '<div class="card red"><b>The charge still went through.</b> Check the steps below and try again. We’ll ask once more after the next due date.</div>';
+  h += '<div class="card mint"><b>' + x.perkBold + '</b> ' + x.perkText + '</div>' +
+    '<div class="card amber">' + I.warn + '<span>' + x.ruleText + '</span></div>';
+  if (decide) {
+    h += '<div class="seg dark" role="radiogroup" aria-label="Decision">' + x.choices.map(function (c) {
+      return '<button role="radio" aria-checked="' + (c === ch) + '" class="' + (c === ch ? 'on' : '') + '" data-a="choice" data-v="' + c + '">' + CHOICE_LABEL[c] + '</button>';
+    }).join('') + '</div>';
+    if (steps.length) h += '<div class="steps">' + steps.map(function (t, i) { return '<div class="step"><b>' + (i + 1) + '</b><span>' + t + '</span></div>'; }).join('') + '</div>';
+    h += '<div class="note">' + (ch === 'keep' ? 'You’ll keep paying ' + money(x.price) + '/mo. We’ll remind you again before the next charge.' : 'Saves ' + money(x.save[ch]) + '/mo once the ' + x.renews + ' charge doesn’t happen.') + '</div>';
+  }
+  if (s.status === 'pending') h += '<div class="card">Marked done. On ' + x.renews + ' we’ll ask whether the ' + money(x.price) + ' charge happened.</div>';
+  if (s.status === 'confirmed' && s.action) h += '<div class="card ok">Confirmed: you’re saving ' + money(x.save[s.action]) + '/mo.</div>';
+  var cta = decide ? (ch === 'keep' ? 'Keep it' : 'I did it') : (s.status === 'pending' ? 'Go to Savings' : 'Back to Home');
+  h += '<div class="grow"></div><button class="btn" data-a="billCta">' + cta + '</button></div>';
+  return h;
+}
+function vFlex() {
+  var fl = (S.activity || []).filter(function (a) { return a.kind === 'buy' && a.via === 'Flex'; });
+  return '<div class="scr"><h1>Flex</h1>' +
+    '<div class="bigcard"><div class="k" style="font-weight:600">Flex dollars</div><div class="v">' + money(S.flex) + '</div><div style="font-size:14px;color:var(--mintText);line-height:1.45;margin-top:6px">Flex is already paid for. Spend it on food first and your cash lasts longer.</div></div>' +
+    '<div class="fine">Balance entered from GU eAccounts. Each Flex purchase you log is subtracted here.</div>' +
+    '<div class="eyebrow">FLEX PURCHASES</div>' +
+    (fl.length ? '<div style="margin-top:-10px">' + fl.map(actRow).join('') + '</div>' : '<div class="card" style="font-size:14px;color:var(--muted);margin-top:-6px">Nothing yet. Tap <b>+</b> and choose Flex, or ask “Can I afford this?” for a food purchase.</div>') +
+    '</div>';
+}
+function vSavings() {
+  var saved = savedTotal(), pend = '', conf = '', nConf = 0, nPend = 0;
+  ORDER.forEach(function (id) {
+    var x = SUBS[id], s = S.subs[id];
+    if (s.status === 'pending') { nPend++; pend += '<div class="q"><div class="t">Did ' + x.short + ' charge ' + money(x.price) + ' on ' + x.renews + '?</div><div class="pair"><button data-a="charged" data-v="' + id + '" data-b="yes">Yes</button><button data-a="charged" data-v="' + id + '" data-b="no">No</button></div></div>'; }
+    if (s.status === 'confirmed' && s.action) { nConf++; conf += '<div class="row">' + tile(x) + '<div class="main"><span class="t">' + x.short + '</span><span class="s">' + x.doneLabel[s.action] + '</span></div><span style="font-size:15px;font-weight:800;color:var(--mintInk)">+' + trim0(money(x.save[s.action])) + '/mo</span></div>'; }
+  });
+  var open = ORDER.filter(function (id) { return S.subs[id].status === 'active' || S.subs[id].status === 'kept'; }).length;
+  return '<div class="scr"><h1>Savings</h1>' +
+    '<div class="bigcard c"><div class="k">You’ve saved</div><div class="v">' + money(saved) + '<small>/mo</small></div><div style="font-size:14px;color:var(--mintText)">≈ ' + trim0(money(saved * 12)) + ' a year</div></div>' +
+    pend +
+    (nConf ? '<div><div class="eyebrow" style="padding-bottom:4px">CONFIRMED</div>' + conf + '</div>' : '') +
+    (!nPend && !nConf ? '<button class="q" style="flex-direction:row;align-items:center" data-a="go" data-v="bills"><span style="flex:1;display:flex;flex-direction:column;gap:4px"><span style="font-size:16px;font-weight:700">' + open + (open === 1 ? ' way' : ' ways') + ' to save waiting</span><span style="font-size:14px;color:var(--muted);line-height:1.4">Open a bill and choose Switch or Stop. Your saving shows up here once the charge doesn’t happen.</span></span>' + I.chevR('#5B6675') + '</button>' : '') +
+    '<div class="fine">A saving counts only when an expected charge doesn’t happen.</div>' +
+    '<button class="btn2" style="height:52px" data-a="csv">Export CSV</button></div>';
+}
+function vLog() {
+  var amt = parseAmt(S.logAmt);
+  var label = amt <= 0 ? 'Save' : (S.logVia === 'Flex' ? 'Save · ' + money(S.flex - amt) + ' Flex left' : 'Save · ' + money(S.left - amt) + ' left');
+  return '<div class="scr full" style="padding-top:44px;gap:14px">' +
+    '<div class="hdr"><button data-a="cancelLog">Cancel</button><div>Log purchase</div><span></span></div>' +
+    '<div class="amtview" aria-live="polite">' + showAmt(S.logAmt) + '</div>' + chips('logCat', S.logCat) +
+    '<div class="eyebrow">PAID WITH</div>' +
+    '<div class="seg" role="radiogroup" aria-label="Paid with" style="margin-top:-8px">' + ['Cash', 'Flex'].map(function (v) { return '<button role="radio" aria-checked="' + (S.logVia === v) + '" class="' + (S.logVia === v ? 'on' : '') + '" data-a="via" data-v="' + v + '">' + v + '</button>'; }).join('') + '</div>' +
+    '<label class="sr" for="note">Note</label><input id="note" class="notein" data-in="logNote" placeholder="Add a note (optional)" value="' + esc(S.logNote) + '">' +
+    keypad() + '<div class="grow"></div><button class="btn" data-a="saveLog"' + (amt <= 0 ? ' disabled' : '') + '>' + label + '</button></div>';
+}
+function vTabs() {
+  var sc = S.screen;
+  function t(id, icon, label) { return '<button class="tab' + (sc === id ? ' on' : '') + '" data-a="go" data-v="' + id + '"' + (sc === id ? ' aria-current="page"' : '') + '>' + icon + '<span>' + label + '</span></button>'; }
+  return '<nav class="tabs" aria-label="Main">' + t('home', I.home, 'Home') + t('bills', I.bills, 'Bills') +
+    '<button class="fab" data-a="openLog" aria-label="Log a purchase">' + I.plus(26, 2.4) + '</button>' +
+    t('flex', I.flex, 'Flex') + t('savings', I.savings, 'Savings') + '</nav>';
+}
+function vSheet() {
+  var out = S.affStage === 'result' ? affordOutcome() : null;
+  var h = '<div class="dim" data-a="dimClose"><div class="sheet" role="dialog" aria-modal="true" aria-label="Can I afford this?">' +
+    '<div class="top"><span></span><span class="grab"></span><button class="x" data-a="closeSheet" aria-label="Close">' + I.x + '</button></div>' +
+    '<div class="ttl">Can I afford this?</div>' +
+    '<div class="amtview" aria-live="polite">' + (out ? money(out.amt) : showAmt(S.affAmt)) + '</div>' + chips('affCat', S.affCat);
+  if (!out) {
+    h += keypad() + '<button class="btn" data-a="check"' + (parseAmt(S.affAmt) <= 0 ? ' disabled' : '') + '>Check</button>';
+  } else {
+    var w = out.kind === 'warn';
+    h += '<div class="res' + (w ? ' warn' : '') + '"><div class="ic">' + (w ? I.bang : I.check('currentColor', 3, 28)) + '</div><div class="t">' + out.title + '</div><div>' + out.l1 + '</div><div class="l2">' + out.l2 + '</div></div>' +
+      '<div class="pair wide"><button class="btn2" data-a="skip">Skip</button><button class="btn" data-a="buy">' + out.buy + '</button></div>' +
+      '<button class="undl" data-a="editAfford">Change amount</button>';
+  }
+  return h + '</div></div>';
+}
+
+var VIEWS = { setup1: vSetup1, setup2: vSetup2, setup3: vSetup3, home: vHome, bills: vBills, bill: vBill, flex: vFlex, savings: vSavings, log: vLog };
+var lastScreen = null;
+function render() {
+  var c = app.querySelector('.content');
+  var keep = c && lastScreen === S.screen ? c.scrollTop : 0;
+  var h = '<div class="content">' + VIEWS[S.screen]() + '</div>';
+  if (TAB_SCREENS.indexOf(S.screen) >= 0) h += vTabs();
+  if (S.sheet === 'afford') h += vSheet();
+  if (toastMsg) h += '<div class="toast" role="status"><div>' + esc(toastMsg) + '</div></div>';
+  app.innerHTML = h;
+  app.querySelector('.content').scrollTop = keep;
+  lastScreen = S.screen;
+  persist();
+}
+
+// ---------- actions ----------
+function press(k) {
+  var f = S.sheet === 'afford' ? 'affAmt' : 'logAmt', s = S[f] || '';
+  if (k === 'del') s = s.slice(0, -1);
+  else if (k === '.') { if (s.indexOf('.') >= 0) return; s = (s || '0') + '.'; }
+  else {
+    var dot = s.indexOf('.');
+    if (dot >= 0 && s.length - dot > 2) return;
+    if (s.replace('.', '').length >= 6) return;
+    s = s === '0' ? k : s + k;
+  }
+  S[f] = s;
+}
+function openBill(id, back) { S.screen = 'bill'; S.billId = id; S.billBackTo = back; S.billChoice = SUBS[id].defaultChoice; }
+
+function exportCsv() {
+  var rows = [['type', 'category', 'paid_with', 'amount', 'note']];
+  (S.activity || []).slice().reverse().forEach(function (a) { rows.push([a.kind === 'skip' ? 'skipped' : 'purchase', a.cat, a.via || '', a.amt.toFixed(2), a.note || '']); });
+  ORDER.forEach(function (id) { var s = S.subs[id]; if (s.status === 'confirmed' && s.action) rows.push(['saving', SUBS[id].name, '', SUBS[id].save[s.action].toFixed(2), SUBS[id].doneLabel[s.action]]); });
+  var csv = rows.map(function (r) { return r.map(function (c) { return '"' + String(c).replace(/"/g, '""') + '"'; }).join(','); }).join('\n');
+  try {
+    var url = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+    var a = document.createElement('a'); a.href = url; a.download = 'hoya-pocket.csv';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1500);
+    toast('CSV exported');
+  } catch (e) { toast('Download isn’t available here'); }
+}
+
+var ACT = {
+  go: function (v) { S.screen = v; },
+  key: function (v) { press(v); },
+  addAnother: function () { toast('In the full app this opens an add-subscription form'); },
+  finish: function () {
+    var plan = parseAmt(S.planStr) || 400;
+    S.plan = plan; S.flex = parseAmt(S.flexStr); S.left = r2(Math.max(0, plan - SPENT_SO_FAR)); S.screen = 'home';
+    toast('You’re set up. 2 ways to save found.');
+  },
+  reset: function () { try { localStorage.removeItem(KEY); } catch (e) {} S = fresh(); toastMsg = ''; },
+  openBill: function (v, b) { openBill(v, b); },
+  choice: function (v) { S.billChoice = v; },
+  billCta: function () {
+    var id = S.billId, x = SUBS[id], s = S.subs[id], ch = S.billChoice;
+    var decide = s.status === 'active' || s.status === 'kept';
+    if (!decide) { S.screen = s.status === 'pending' ? 'savings' : 'home'; return; }
+    if (ch === 'keep') { setSub(id, { status: 'kept', retry: false }); S.screen = 'home'; toast('Kept. We’ll remind you before the next charge.'); }
+    else { setSub(id, { status: 'pending', action: ch, retry: false }); S.screen = 'savings'; toast('Nice. We’ll check that ' + x.short + ' doesn’t charge.'); }
+  },
+  charged: function (id, ans) {
+    var x = SUBS[id], s = S.subs[id];
+    if (ans === 'yes') { setSub(id, { status: 'active', retry: true }); S.screen = 'bill'; S.billId = id; S.billBackTo = 'savings'; S.billChoice = s.action || x.defaultChoice; }
+    else { setSub(id, { status: 'confirmed', retry: false }); toast('Saving confirmed: +' + money(x.save[s.action]) + '/mo'); }
+  },
+  csv: function () { exportCsv(); },
+  openLog: function () { S.prev = TAB_SCREENS.indexOf(S.screen) >= 0 ? S.screen : 'home'; S.screen = 'log'; S.logAmt = ''; S.logCat = 'Food'; S.logVia = 'Cash'; S.logNote = ''; },
+  cancelLog: function () { S.screen = S.prev || 'home'; },
+  logCat: function (v) { S.logCat = v; },
+  via: function (v) { S.logVia = v; },
+  saveLog: function () {
+    var amt = parseAmt(S.logAmt); if (amt <= 0) return;
+    addActivity({ kind: 'buy', amt: amt, cat: S.logCat, via: S.logVia, note: S.logNote });
+    if (S.logVia === 'Flex') S.flex = r2(S.flex - amt); else S.left = r2(S.left - amt);
+    S.screen = S.prev || 'home';
+    toast('Logged ' + money(amt) + ' · ' + S.logVia);
+  },
+  openAfford: function () { S.sheet = 'afford'; S.affAmt = ''; S.affCat = 'Food'; S.affStage = 'enter'; },
+  closeSheet: function () { S.sheet = null; },
+  affCat: function (v) { S.affCat = v; },
+  check: function () { if (parseAmt(S.affAmt) > 0) S.affStage = 'result'; },
+  editAfford: function () { S.affStage = 'enter'; },
+  buy: function () {
+    var o = affordOutcome(), via = o.kind === 'flex' ? 'Flex' : 'Cash';
+    addActivity({ kind: 'buy', amt: o.amt, cat: S.affCat, via: via, note: '' });
+    if (via === 'Flex') S.flex = r2(S.flex - o.amt); else S.left = r2(S.left - o.amt);
+    S.sheet = null; S.affAmt = ''; S.affStage = 'enter';
+    toast('Bought with ' + via + ' · ' + money(o.amt));
+  },
+  skip: function () {
+    var o = affordOutcome();
+    addActivity({ kind: 'skip', amt: o.amt, cat: S.affCat });
+    S.sheet = null; S.affAmt = ''; S.affStage = 'enter';
+    toast('Skipped. ' + money(o.amt) + ' stays in your pocket.');
+  }
+};
+
+app.addEventListener('click', function (e) {
+  var el = e.target.closest('[data-a]');
+  if (!el || !app.contains(el)) return;
+  var a = el.getAttribute('data-a');
+  if (a === 'dimClose') { if (e.target !== el) return; S.sheet = null; render(); return; }
+  if (el.disabled || !ACT[a]) return;
+  ACT[a](el.getAttribute('data-v'), el.getAttribute('data-b'));
+  render();
+});
+app.addEventListener('input', function (e) {
+  var f = e.target.getAttribute && e.target.getAttribute('data-in');
+  if (f) S[f] = e.target.value; persist();
+});
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && S.sheet) { S.sheet = null; render(); }
+});
+
+render();
+})();
+</script>
+</body>
+</html>
